@@ -571,7 +571,8 @@ class Button extends AbstractEntity
     public static function loadValidatorMetadata(ClassMetadata $metadata): void
     {
         $metadata->addPropertyConstraints('actionBody', [
-            new Assert\NotBlank(),
+            // @TODO can be blank/null! See https://viber.github.io/docs/tools/keyboards/#replyLogic
+            // new Assert\NotBlank(),
             // @TODO: more validations
         ]);
         // @TODO: Validate rules for other properties
