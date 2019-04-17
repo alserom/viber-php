@@ -62,4 +62,12 @@ class ConversationStarted extends AbstractEvent
     {
         return User::fromArray($this->data['user']);
     }
+
+    /**
+     * @return bool
+     */
+    public function isSubscribed(): bool
+    {
+        return $this->subscribed;
+    }
 }

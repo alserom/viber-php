@@ -189,7 +189,7 @@ class Bot implements RequestHandlerInterface
         $message = $this->options['welcome_message'];
 
         if ($message instanceof \Closure) {
-            $message = $message(clone $event->getUser());
+            $message = $message(clone $event->getUser(), $event->isSubscribed());
         }
 
         if ($message === null || !$message instanceof Message) {
