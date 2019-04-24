@@ -50,29 +50,37 @@ final class Psr17
     }
 
     /**
-     * @param object $psr17Factory Must implements all PSR-17 interfaces
+     * @param mixed $psr17Factory Must implements all PSR-17 interfaces
      * @return Psr17
-     * @throws \RuntimeException
+     * @throws \InvalidArgumentException
      */
     public static function useForAll($psr17Factory): self
     {
+        $missedInterface = [];
         if (!$psr17Factory instanceof RequestFactoryInterface) {
-            throw new \RuntimeException('Object must implements \Psr\Http\Message\RequestFactoryInterface');
+            $missedInterface[] = RequestFactoryInterface::class;
         }
         if (!$psr17Factory instanceof ResponseFactoryInterface) {
-            throw new \RuntimeException('Object must implements \Psr\Http\Message\ResponseFactoryInterface');
+            $missedInterface[] = ResponseFactoryInterface::class;
         }
         if (!$psr17Factory instanceof ServerRequestFactoryInterface) {
-            throw new \RuntimeException('Object must implements \Psr\Http\Message\ServerRequestFactoryInterface');
+            $missedInterface[] = ServerRequestFactoryInterface::class;
         }
         if (!$psr17Factory instanceof StreamFactoryInterface) {
-            throw new \RuntimeException('Object must implements \Psr\Http\Message\StreamFactoryInterface');
+            $missedInterface[] = StreamFactoryInterface::class;
         }
         if (!$psr17Factory instanceof UploadedFileFactoryInterface) {
-            throw new \RuntimeException('Object must implements \Psr\Http\Message\UploadedFileFactoryInterface');
+            $missedInterface[] = UploadedFileFactoryInterface::class;
         }
         if (!$psr17Factory instanceof UriFactoryInterface) {
-            throw new \RuntimeException('Object must implements \Psr\Http\Message\UriFactoryInterface');
+            $missedInterface[] = UriFactoryInterface::class;
+        }
+
+        if (\count($missedInterface) !== 0) {
+            throw new \InvalidArgumentException(sprintf(
+                'The passed argument does not realise the required interfaces: %s',
+                implode(', ', $missedInterface)
+            ));
         }
 
         return new self($psr17Factory, $psr17Factory, $psr17Factory, $psr17Factory, $psr17Factory, $psr17Factory);
